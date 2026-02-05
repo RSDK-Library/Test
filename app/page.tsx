@@ -1,135 +1,75 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import * as untitled from '@untitled-ui/icons-react';
-import * as Icons from 'lucide-react'
+import * as ui_card from "@/components/ui/card"
+import * as ui_sidebar from "@/components/ui/sidebar"
+import * as lucide from "lucide-react"
 
-// --------------------
-// UI Component Imports
-// --------------------
+import * as dialogs from '@/app/controls/dialogs'
 
-import * as Path from '@/app/controls/path-context'
-import * as HomeBreadcrumb from '@/app/controls/breadcrumb'
-import * as Side from '@/app/controls/app-sidebar'
+import HomeEngineButton from "@/app/controls/home-engine-button"
 
-import * as Sidebar from '@/components/mod/sidebar'
-import * as Drawer from 'ui/drawer'
-import * as Breadcrumb from 'ui/breadcrumb'
+const data = [
+    {
+        title: "RSDKv5U",
+        description: "Jds2ce/RSDKv5-Decompilation",
+        icon: "./assets/RSDKv5U.svg",
+        fs_directory: "RSDKv5U",
+        executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv5U.wasm"
+    },
+    {
+        title: "RSDKv5",
+        description: "Jds2ce/RSDKv5-Decompilation",
+        icon: "./assets/RSDKv5.svg",
+        fs_directory: "RSDKv5",
+        executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv5.wasm"
+    },
+    {
+        title: "RSDKv4",
+        description: "Jds2ce/RSDKv4-Decompilation",
+        icon: "./assets/RSDKv4.svg",
+        fs_directory: "RSDKv4",
+        executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv4.wasm"
+    },
+    {
+        title: "RSDKv3",
+        description: "Jds2ce/RSDKv3-Decompilation",
+        icon: "./assets/RSDKv3.svg",
+        fs_directory: "RSDKv3",
+        executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv3.wasm"
+    },
+    {
+        title: "RSDKv2",
+        description: "Jds2ce/RSDKv2-Decompilation",
+        icon: "./assets/RSDKv2.svg",
+        fs_directory: "RSDKv2",
+        executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv2.wasm"
+    },
+]
 
-import { Button } from 'ui/button'
-import { Separator } from 'ui/separator'
-import { SettingsContent } from '@/app/controls/settings-content'
 
-import PageLoader from '@/app/controls/page-loader'
-
-// ------------
-// Misc Imports
-// ------------
-
-import { useIsMobile } from 'hooks/use-mobile'
-
-// ---------------------
-// Component Definitions
-// ---------------------
 
 export default function Page() {
     return (
-        <Path.Provider>
-            <HomeBreadcrumb.Provider>
-                <Sidebar.SidebarProvider>
-                    <PageContent />
-                </Sidebar.SidebarProvider>
-            </HomeBreadcrumb.Provider>
-        </Path.Provider>
-    );
+        <div className="flex h-svh items-center justify-center">
+            <dialogs.SettingsDialog />
+            <dialogs.FolderCreateDialog />
+            <dialogs.FolderDeleteDialog />
+
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+
+
+                { /*
+                {data.map((engine) => (
+                    <HomeEngineButton
+                        key={engine.title}
+                        title={engine.title}
+                        description={engine.description}
+                        icon={engine.icon}
+                    />
+                ))}
+                */ }
+
+            </div>
+        </div>
+    )
 }
-
-const PageContent: React.FC = () => {
-    const { currentPath, setCurrentPath } = Path.useCurrentPath();
-    const [open, setOpen] = React.useState(false);
-    const isMobile = useIsMobile();
-    const { toggleSidebar } = Sidebar.useSidebar();
-
-    return (
-        <>
-            <Side.AppSidebar onNavigate={(path) => setCurrentPath(path)} />
-            <main className='w-screen h-screen flex flex-col'>
-                <header className='PWA-Title-Draggable sticky top-0 z-10 flex h-12 shrink-0 items-center border-b'>
-                    <div className={`PWA-Title-NonDraggable flex items-center gap-2 ${!isMobile ? 'px-2' : 'pl-2'}`}>
-                        {isMobile ? (
-                            <>
-                                <Button variant='ghost' size='sm' onClick={() => setCurrentPath('home')}>
-                                    <Icons.Home />
-                                </Button>
-                                <Drawer.Drawer open={open} onOpenChange={setOpen}>
-                                    <Drawer.DrawerTrigger asChild>
-                                        <Button className='-ml-1' variant='ghost' size='sm'>
-                                            <Icons.Settings2 />
-                                        </Button>
-                                    </Drawer.DrawerTrigger>
-                                    <Drawer.DrawerContent>
-                                        <Drawer.DrawerHeader>
-                                            <Drawer.DrawerTitle>Settings</Drawer.DrawerTitle>
-                                            <Drawer.DrawerDescription>Configure the engines.</Drawer.DrawerDescription>
-                                        </Drawer.DrawerHeader>
-                                        <Drawer.DrawerFooter className='pt-2'>
-                                            <SettingsContent />
-                                        </Drawer.DrawerFooter>
-                                    </Drawer.DrawerContent>
-                                </Drawer.Drawer>
-                            </>
-                        ) : (
-                            <Button className='w-9 h-9' variant='ghost' size='sm' onClick={toggleSidebar}>
-                                <untitled.Menu01 />
-                            </Button>
-                        )}
-                        <Separator orientation='vertical' className='mr-2 h-4' />
-                        <Breadcrumb.Breadcrumb>
-                            <Breadcrumb.BreadcrumbList>
-                                <BreadcrumbContent currentPath={currentPath} />
-                            </Breadcrumb.BreadcrumbList>
-                        </Breadcrumb.Breadcrumb>
-                    </div>
-                </header>
-                <div className='p-4 flex-1 overflow-auto'>
-                    <PageLoader path={currentPath} setCurrentPath={setCurrentPath} />
-                </div>
-            </main>
-        </>
-    );
-};
-
-const BreadcrumbContent: React.FC<{ currentPath: string }> = ({ currentPath }) => {
-    const { items, AddNode } = HomeBreadcrumb.useBreadcrumb();
-
-    React.useEffect(() => {
-        if (currentPath === 'home') {
-            AddNode('Home', '/', () => null);
-        }
-    }, [currentPath, AddNode]);
-
-    return (
-        <>
-            {items.map((item, index) => (
-                <React.Fragment key={index}>
-                    <Breadcrumb.BreadcrumbItem>
-                        {index === items.length - 1 ? (
-                            <Breadcrumb.BreadcrumbPage>
-                                {item.label}
-                            </Breadcrumb.BreadcrumbPage>
-                        ) : (
-                            <Breadcrumb.BreadcrumbLink
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (item.onClick) item.onClick();
-                                }}>
-                                {item.label}
-                            </Breadcrumb.BreadcrumbLink>
-                        )}
-                    </Breadcrumb.BreadcrumbItem>
-                    {index < items.length - 1 && <Breadcrumb.BreadcrumbSeparator />}
-                </React.Fragment>
-            ))}
-        </>
-    );
-};

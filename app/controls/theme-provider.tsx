@@ -1,23 +1,15 @@
-'use client'
-
-import * as React from 'react'
+"use client"
 
 // --------------------
 // UI Component Imports
 // --------------------
 
-import { ThemeProvider as Provider } from 'next-themes'
-
-// ------------
-// Misc Imports
-// ------------
-
-import { type ThemeProviderProps as Props } from 'next-themes/dist/types'
+import * as themes from "next-themes"
 
 // ---------------------
 // Component Definitions
 // ---------------------
 
-export function ThemeProvider({ children, ...props }: Props) {
-  return <Provider {...props}>{children}</Provider>
+export function ThemeProvider({ children, ...props }: themes.ThemeProviderProps) {
+	return <themes.ThemeProvider {...props}>{children}</themes.ThemeProvider>
 }
