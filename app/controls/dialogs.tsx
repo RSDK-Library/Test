@@ -1,7 +1,10 @@
+"use client"
+
 // ------------------
 // UI Component Fonts
 // ------------------
 
+import * as lib_settings from "@/lib/settings"
 import * as ui_alert from "@/components/ui/alert-dialog"
 import * as ui_button from "@/components/ui/button"
 import * as ui_field from "@/components/ui/field"
@@ -10,15 +13,34 @@ import * as ui_label from "@/components/ui/label"
 import * as ui_select from "@/components/ui/select"
 import * as ui_switch from "@/components/ui/switch"
 import * as lucide from "lucide-react"
+import * as React from "react";
 
 // ---------------------
 // Component Definitions
 // ---------------------
 
 export function SettingsDialog() {
+    const [settings, setSettings] = React.useState<lib_settings.ISettings>(lib_settings.Load());
+    const [open, setOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        if (open)
+            setSettings(lib_settings.Load());
+    }, [open]);
+
+    const actionCancel = () => {
+        setSettings(lib_settings.Load());
+        setOpen(false);
+    };
+
+    const actionSave = () => {
+        lib_settings.Save(settings);
+        setOpen(false);
+    };
+
     return (
-        <ui_alert.AlertDialog>
-            <form>
+        <ui_alert.AlertDialog open={open} onOpenChange={setOpen}>
+            <form onSubmit={(e) => { e.preventDefault(); actionSave(); }}>
                 <ui_alert.AlertDialogTrigger asChild>
                     <ui_button.Button variant="outline">Settings dialog</ui_button.Button>
                 </ui_alert.AlertDialogTrigger>
@@ -37,7 +59,10 @@ export function SettingsDialog() {
                     <ui_field.FieldGroup>
                         <ui_field.Field>
                             <ui_field.FieldLabel htmlFor="theme-form">Theme</ui_field.FieldLabel>
-                            <ui_select.Select defaultValue="system">
+                            <ui_select.Select
+                                value={settings.theme}
+                                onValueChange={(value) => setSettings({ ...settings, theme: value as lib_settings.themeType })}
+                            >
                                 <ui_select.SelectTrigger id="theme-form">
                                     <ui_select.SelectValue placeholder="Select a theme" />
                                 </ui_select.SelectTrigger>
@@ -51,7 +76,7 @@ export function SettingsDialog() {
                             </ui_select.Select>
                         </ui_field.Field>
 
-                        <ui_field.FieldLabel htmlFor="mobile-layout-switch">
+                        <ui_field.FieldLabel htmlFor="dialog-conf-switch">
                             <ui_field.Field orientation="horizontal">
                                 <ui_field.FieldContent>
                                     <ui_field.FieldTitle>Disable confirmation dialogs</ui_field.FieldTitle>
@@ -59,7 +84,11 @@ export function SettingsDialog() {
                                         Disables dialogs for the file manager
                                     </ui_field.FieldDescription>
                                 </ui_field.FieldContent>
-                                <ui_switch.Switch id="mobile-layout-switch" />
+                                <ui_switch.Switch
+                                    id="dialog-conf-switch"
+                                    checked={settings.disableFileConf}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, disableFileConf: checked })}
+                                />
                             </ui_field.Field>
                         </ui_field.FieldLabel>
 
@@ -71,7 +100,11 @@ export function SettingsDialog() {
                                         Use the mobile layout on supported engines
                                     </ui_field.FieldDescription>
                                 </ui_field.FieldContent>
-                                <ui_switch.Switch id="mobile-layout-switch" />
+                                <ui_switch.Switch
+                                    id="mobile-layout-switch"
+                                    checked={settings.mobileLayout}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, mobileLayout: checked })}
+                                />
                             </ui_field.Field>
                         </ui_field.FieldLabel>
 
@@ -83,14 +116,18 @@ export function SettingsDialog() {
                                         Use the Plus DLC on supported engines
                                     </ui_field.FieldDescription>
                                 </ui_field.FieldContent>
-                                <ui_switch.Switch id="switch-share" />
+                                <ui_switch.Switch
+                                    id="switch-share"
+                                    checked={settings.enablePlus}
+                                    onCheckedChange={(checked) => setSettings({ ...settings, enablePlus: checked })}
+                                />
                             </ui_field.Field>
                         </ui_field.FieldLabel>
                     </ui_field.FieldGroup>
 
                     <ui_alert.AlertDialogFooter>
-                        <ui_alert.AlertDialogCancel>Cancel</ui_alert.AlertDialogCancel>
-                        <ui_alert.AlertDialogAction>Save changes</ui_alert.AlertDialogAction>
+                        <ui_alert.AlertDialogCancel onClick={actionCancel}>Cancel</ui_alert.AlertDialogCancel>
+                        <ui_alert.AlertDialogAction onClick={actionSave}>Save changes</ui_alert.AlertDialogAction>
                     </ui_alert.AlertDialogFooter>
                 </ui_alert.AlertDialogContent>
             </form>
@@ -112,7 +149,7 @@ export function FolderCreateDialog() {
                             <lucide.FolderClosed />
                         </ui_alert.AlertDialogMedia>
                         <ui_alert.AlertDialogTitle>New Folder</ui_alert.AlertDialogTitle>
-                         <ui_alert.AlertDialogDescription>
+                        <ui_alert.AlertDialogDescription>
                             Create a new folder in [directory]
                         </ui_alert.AlertDialogDescription>
                     </ui_alert.AlertDialogHeader>
