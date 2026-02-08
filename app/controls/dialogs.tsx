@@ -1,10 +1,17 @@
 "use client"
 
+// ---------------
+// Library Imports
+// ---------------
+
+import * as lib_settings from "@/lib/settings"
+import * as lucide from "lucide-react"
+import * as React from "react";
+
 // ------------------
 // UI Component Fonts
 // ------------------
 
-import * as lib_settings from "@/lib/settings"
 import * as ui_alert from "@/components/ui/alert-dialog"
 import * as ui_button from "@/components/ui/button"
 import * as ui_field from "@/components/ui/field"
@@ -12,8 +19,6 @@ import * as ui_input from "@/components/ui/input"
 import * as ui_label from "@/components/ui/label"
 import * as ui_select from "@/components/ui/select"
 import * as ui_switch from "@/components/ui/switch"
-import * as lucide from "lucide-react"
-import * as React from "react";
 
 // ---------------------
 // Component Definitions
@@ -148,10 +153,7 @@ export function FolderCreateDialog() {
                         <ui_alert.AlertDialogMedia>
                             <lucide.FolderClosed />
                         </ui_alert.AlertDialogMedia>
-                        <ui_alert.AlertDialogTitle>New Folder</ui_alert.AlertDialogTitle>
-                        <ui_alert.AlertDialogDescription>
-                            Create a new folder in [directory]
-                        </ui_alert.AlertDialogDescription>
+                        <ui_alert.AlertDialogTitle>Create a new folder in [directory]</ui_alert.AlertDialogTitle>
                     </ui_alert.AlertDialogHeader>
 
                     <ui_field.FieldGroup>

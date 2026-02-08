@@ -11,35 +11,35 @@ import HomeEngineButton from "@/app/controls/home-engine-button"
 const data = [
     {
         title: "RSDKv5U",
-        description: "Jds2ce/RSDKv5-Decompilation",
+        description: "RSDKv5U.wasm",
         icon: "./assets/RSDKv5U.svg",
         fs_directory: "RSDKv5U",
         executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv5U.wasm"
     },
     {
         title: "RSDKv5",
-        description: "Jds2ce/RSDKv5-Decompilation",
+        description: "RSDKv5.wasm",
         icon: "./assets/RSDKv5.svg",
         fs_directory: "RSDKv5",
         executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv5.wasm"
     },
     {
         title: "RSDKv4",
-        description: "Jds2ce/RSDKv4-Decompilation",
+        description: "RSDKv4.wasm",
         icon: "./assets/RSDKv4.svg",
         fs_directory: "RSDKv4",
         executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv4.wasm"
     },
     {
         title: "RSDKv3",
-        description: "Jds2ce/RSDKv3-Decompilation",
+        description: "RSDKv3.wasm",
         icon: "./assets/RSDKv3.svg",
         fs_directory: "RSDKv3",
         executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv3.wasm"
     },
     {
         title: "RSDKv2",
-        description: "Jds2ce/RSDKv2-Decompilation",
+        description: "RSDKv2.wasm",
         icon: "./assets/RSDKv2.svg",
         fs_directory: "RSDKv2",
         executable: "https://github.com/Jds2ce/RSDKv5-Decompilation/RSDKv2.wasm"
@@ -50,15 +50,8 @@ const data = [
 
 export default function Page() {
     return (
-        <div className="flex h-svh items-center justify-center">
-            <dialogs.SettingsDialog />
-            <dialogs.FolderCreateDialog />
-            <dialogs.FolderDeleteDialog />
-
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-
-
-                { /*
+        <div className="flex items-center justify-left">
+            <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
                 {data.map((engine) => (
                     <HomeEngineButton
                         key={engine.title}
@@ -67,8 +60,10 @@ export default function Page() {
                         icon={engine.icon}
                     />
                 ))}
-                */ }
 
+                <dialogs.SettingsDialog />
+                <dialogs.FolderCreateDialog />
+                <dialogs.FolderDeleteDialog />
             </div>
         </div>
     )
